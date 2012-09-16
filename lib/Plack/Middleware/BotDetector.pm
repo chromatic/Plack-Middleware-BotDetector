@@ -20,4 +20,28 @@ sub call
     return $self->app->( $env );
 }
 
+=head1 SYNOPSIS
+
+    enable 'Plack::Middleware::BotDetector',
+        bot_regex => qr/Googlebot|Baiduspider|Yahoo! Slurp/;
+
+=head1 DESCRIPTION
+
+Any popular web site will get a tremendous amount of traffic from bots,
+spiders, and other automated processes. Sometimes you want to do (or not do)
+things when such a request comes in--for example, you may not want to log bot
+traffic on your site.
+
+This middleware applies an arbitrary, user-supplied regex to incoming requests
+and sets a key in the PSGI environment if the user agent of the request
+matches. Any other portion of your app which understands PSGI can examine the
+environment for this key to take appropriate actions.
+
+=head1 SPONSORSHIP
+
+This module was extracted from L<http://trendshare.org/> under the sponsorship
+of L<http://bigbluemarblellc.com/>.
+
+=cut
+
 1;
