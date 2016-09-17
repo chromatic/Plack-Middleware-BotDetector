@@ -1,11 +1,12 @@
 package Plack::Middleware::BotDetector;
 # ABSTRACT: Plack middleware to identify bots and spiders
 
-use strict;
-use warnings;
+# these are useful, but not useful enough for their speed/memory cost here
+# use strict;
+# use warnings;
+# use Plack::Util::Accessor 'bot_regex';
 
 use parent 'Plack::Middleware';
-use Plack::Util::Accessor 'bot_regex';
 
 sub call
 {
@@ -14,7 +15,7 @@ sub call
 
     if (my $user_agent = $_[1]->{HTTP_USER_AGENT})
     {
-        my $bot_regex = $_[0]->bot_regex;
+        my $bot_regex = $_[0]->{bot_regex};
         $_[1]->{'BotDetector.looks-like-bot'}++ if $user_agent =~ qr/$bot_regex/;
     }
 
