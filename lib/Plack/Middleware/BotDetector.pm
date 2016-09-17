@@ -9,16 +9,16 @@ use Plack::Util::Accessor 'bot_regex';
 
 sub call
 {
-    my ($self, $env) = @_;
-    my $user_agent   = $env->{HTTP_USER_AGENT};
-    my $bot_regex    = $self->bot_regex;
+    # no need to copy these just to put names on them
+    # my ($self, $env) = @_;
 
-    if ($user_agent)
+    if (my $user_agent = $_[1]->{HTTP_USER_AGENT})
     {
-        $env->{'BotDetector.looks-like-bot'}++ if $user_agent =~ qr/$bot_regex/;
+        my $bot_regex = $_[0]->bot_regex;
+        $_[1]->{'BotDetector.looks-like-bot'}++ if $user_agent =~ qr/$bot_regex/;
     }
 
-    return $self->app->( $env );
+    return $_[0]->app->( $_[1] );
 }
 
 =head1 SYNOPSIS
@@ -40,7 +40,7 @@ environment for this key to take appropriate actions.
 
 =head1 SPONSORSHIP
 
-This module was extracted from L<http://trendshare.org/> under the sponsorship
+This module was extracted from L<https://trendshare.org/> under the sponsorship
 of L<http://bigbluemarblellc.com/>.
 
 =cut
